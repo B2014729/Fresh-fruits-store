@@ -1,16 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <HeaderComponent />
+  <router-view>
+
+  </router-view>
+  <FooterComponent />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+window.scrollTo(0, 0);
+import HeaderComponent from '@/components/headerCompnent.vue';
+import FooterComponent from '@/components/footterComponent.vue';
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
-  }
+    HeaderComponent,
+    FooterComponent,
+  },
+  name: 'App',
+
 }
 </script>
 
@@ -19,8 +26,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 20px;
+  color: #000000;
 }
 </style>
