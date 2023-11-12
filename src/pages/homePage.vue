@@ -28,29 +28,8 @@
                 style="color: rgba(120, 120, 120, 0.471);">______________________________</span>
         </h4>
         <div class="row">
-            <div class="col-md-3">
-                <CardProduct />
-            </div>
-            <div class="col-md-3">
-                <CardProduct />
-            </div>
-            <div class="col-md-3">
-                <CardProduct />
-            </div>
-            <div class="col-md-3">
-                <CardProduct />
-            </div>
-            <div class="col-md-3">
-                <CardProduct />
-            </div>
-            <div class="col-md-3">
-                <CardProduct />
-            </div>
-            <div class="col-md-3">
-                <CardProduct />
-            </div>
-            <div class="col-md-3">
-                <CardProduct />
+            <div class="col-md-3" v-for="(product, index) in listProduct" :key="index">
+                <CardProduct :product=product />
             </div>
         </div>
         <div class="w-100 d-flex justify-content-center my-4">
@@ -83,12 +62,12 @@
                             placeholder="name@example.com">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Phone number:</label>
-                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="0123456789">
+                        <label for="exampleFormControlInpu" class="form-label">Phone number:</label>
+                        <input type="email" class="form-control" id="exampleFormControlInpu" placeholder="0123456789">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleFormControlTextarea1" class="form-label">Description:</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <label for="exampleFormControlTextarea" class="form-label">Description:</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea" rows="3"></textarea>
                     </div>
                 </form>
             </div>
@@ -105,14 +84,32 @@
 <script>
 import CardProduct from '@/components/product/cardProduct.vue';
 import NewsCard from '@/components/newsComponent.vue';
-export default {
 
+import productService from '@/service/product.service.js';
+export default {
     name: 'HomePage',
     components: {
         CardProduct,
         NewsCard,
+    },
+
+    data() {
+        return {
+            listProduct: [],
+        };
+    },
+
+    async created() {
+        try {
+            await productService.getIsOutstanding().then((result) => {
+                this.listProduct = result.data;
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
+
 </script>
 <style scoped>
 .banner {

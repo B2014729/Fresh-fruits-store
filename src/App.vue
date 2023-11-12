@@ -1,5 +1,5 @@
 <template>
-  <HeaderComponent />
+  <HeaderComponent :issetToken="issetAuth" />
   <router-view>
 
   </router-view>
@@ -17,6 +17,16 @@ export default {
     FooterComponent,
   },
   name: 'App',
+
+  data() {
+    let issetAuth = false;
+    if (this.$cookies.get('jwt')) {
+      issetAuth = true;
+    }
+    return {
+      issetAuth
+    };
+  }
 
 }
 </script>

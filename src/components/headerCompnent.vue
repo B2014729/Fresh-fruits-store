@@ -22,9 +22,12 @@
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/"><i
-                                                class="fa-solid fa-house me-1"></i> Trang chủ</a>
+                                        <router-link class="nav-link" style="text-decoration: none;"
+                                            :to="{ name: 'home-page' }">
+                                            <i class="fa-solid fa-house me-1"></i> Trang chủ
+                                        </router-link>
                                     </li>
+
                                     <li class="nav-item">
                                         <a class="nav-link" href="#">Giới thiệu</a>
                                     </li>
@@ -50,7 +53,7 @@
                                                 </li>
                                                 <li>
                                                     <router-link class="dropdown-item"
-                                                        :to="{ name: 'portfolio-product', params: { producttype: 'nk' } }">
+                                                        :to="{ name: 'portfolio-product', params: { producttype: 'nn' } }">
                                                         Trái cây nhập khẩu
                                                     </router-link>
                                                 </li>
@@ -60,7 +63,6 @@
                                     <li class="nav-item">
                                         <a class="nav-link" aria-disabled="true">Liên hệ</a>
                                     </li>
-
                                 </ul>
                             </div>
                         </div>
@@ -73,18 +75,33 @@
                             </button>
 
 
-                            <div class="btn-group ms-2">
+                            <div v-if="issetToken" class="btn-group ms-2">
+                                <span class="text-success mt-2">Bang</span>
+                                <button class="btn" @click="onLogout"><i
+                                        class="fa-solid fa-right-from-bracket"></i></button>
                             </div>
-                            <div class="btn-group ms-2">
+                            <div v-else class="btn-group ms-2">
                                 <button type="button" class="dropdown-toggle nav-link px-1" data-bs-toggle="dropdown">
                                     <i class="fa-solid fa-user"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li class="border-bottom"><button class="dropdown-item" type="button"><i
-                                                class="fa-solid fa-right-to-bracket me-1"></i> Đăng nhập</button></li>
-                                    <li><button class="dropdown-item" type="button"><i class="fa-solid fa-book me-1"></i>
-                                            Đăng
-                                            kí</button></li>
+                                    <router-link :to="{ name: 'login' }" style="text-decoration: none;">
+                                        <li class="border-bottom">
+                                            <button class="dropdown-item" type="button"><i
+                                                    class="fa-solid fa-right-to-bracket me-1"></i> Đăng nhập
+                                            </button>
+                                        </li>
+                                    </router-link>
+
+                                    <router-link :to="{ name: 'signup' }" style="text-decoration: none;">
+                                        <li>
+                                            <button class="dropdown-item" type="button"><i
+                                                    class="fa-solid fa-book me-1"></i>
+                                                Đăng kí
+                                            </button>
+                                        </li>
+                                    </router-link>
+
                                 </ul>
                             </div>
                         </div>
@@ -95,6 +112,25 @@
     </nav>
 </template>
 <script>
+
+export default {
+    name: 'HeaderComponent',
+    props: {
+        issetToken: {
+            type: Boolean,
+        }
+    },
+
+    methods: {
+        onLogout() {
+            if (confirm('Bạn muốn đăng xuất!')) {
+                this.$cookies.remove('jwt');
+                window.location.href = '/';
+            }
+        }
+    },
+}
+
 </script>
 <style scoped>
 .navbar {

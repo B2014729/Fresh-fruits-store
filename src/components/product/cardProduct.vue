@@ -5,14 +5,13 @@
                 -33%
             </p>
         </div>
-        <router-link :to="{ name: 'detail-product', params: { idProduct: '123456' } }">
-            <img class="img-fluid px-1" src="https://hoaqua.langsonweb.com/wp-content/uploads/2020/09/hoa-qua-4.jpg"
-                alt="anh san pham">
+        <router-link :to="{ name: 'detail-product', params: { idProduct: product._id } }">
+            <img @click="onCard" class="img-fluid px-1" :src="product.image" alt="anh san pham">
         </router-link>
-        <div class="w-100 d-flex justify-content-center">
+        <div class="w-100 mt-3 d-flex justify-content-center">
             <div>
-                <span class="name-product">Vãi nhập khẩu</span>
-                <p class="text-center text-danger">80.000đ</p>
+                <span class="name-product">{{ product.name }}</span>
+                <p class="text-center text-danger">{{ product.price }} đ</p>
             </div>
         </div>
         <div class="w-100 d-flex justify-content-between px-2">
@@ -33,6 +32,12 @@
 <script>
 export default {
     name: 'cardProduct',
+    props: {
+        product: {
+            type: Object,
+            required: true,
+        }
+    },
     data() {
         return {
             quantity: 1,
@@ -55,10 +60,18 @@ export default {
             this.quantity = 1;
             alert('Đã thêm vào giỏ hàng');
         },
+
+        onCard() {
+            this.$emit('onCard', this.product._id);
+        }
     },
 }
 </script>
 <style scoped>
+.card-product {
+    min-height: 468px;
+}
+
 .card-product:hover {
     box-shadow: rgba(1, 143, 1, 0.373) 2px 2px 2px 2px;
 }

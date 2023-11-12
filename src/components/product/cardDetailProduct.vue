@@ -1,20 +1,17 @@
 <template>
     <div class="row">
         <div class="col-md-4 col-sm-6 col-12">
-            <img class="img-fluid" src="https://tfruit.com.vn/wp-content/uploads/2019/08/nho-xanh-autum-crips.jpg"
-                alt="anh san pham">
+            <img class="img-fluid" :src="product.image" alt="anh san pham">
         </div>
         <div class="col-md-6 col-sm-6 col-12">
-            <h4 class="text-success fst-italic">Nho xanh Autumn NXA</h4>
+            <h4 class="text-success fst-italic">{{ product.name }}</h4>
             <p class="text-success">____</p>
-            <span class="fs-3 fw-bold">330,000 vnd</span>
-            <p class="text-success">Nho xanh Autumn Crisp Mỹ Giòn ngọt, mang chút vị chua, ăn vào có cảm giác thanh nhẹ đầu
-                lưỡi và giữ vị ngọt.
-            </p>
+            <span class="fs-3 fw-bold">{{ product.price }} vnd</span>
+            <p class="text-success">{{ product.description }}</p>
             <ul>
-                <li><span class="fw-bold">Quy cách:</span> 0,5 kg</li>
-                <li><span class="fw-bold">Hạn sử dụng:</span> 10/12/2023</li>
-                <li><span class="fw-bold">Xuất xứ:</span> Bình Thuận</li>
+                <li><span class="fw-bold">Quy cách:</span> {{ product.specifications }} kg.</li>
+                <li><span class="fw-bold">Hạn sử dụng:</span> {{ product.hsd }} kể từ ngày thu hoạch.</li>
+                <li><span class="fw-bold">Xuất xứ:</span> {{ product.origin }}.</li>
             </ul>
             <div class="w-50 d-flex justify-content-between px-2">
                 <div class="mt-2">
@@ -35,7 +32,12 @@
 <script>
 export default {
     name: 'CardDetailProduct',
-
+    props: {
+        product: {
+            type: Object,
+            required: true,
+        }
+    },
     data() {
         return {
             quantity: 1,

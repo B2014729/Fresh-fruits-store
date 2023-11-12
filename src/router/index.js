@@ -7,6 +7,18 @@ const routes = [
         component: () => import('@/pages/homePage.vue'),
     },
 
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('@/pages/login.vue'),
+    },
+
+
+    {
+        path: '/signup',
+        name: 'signup',
+        component: () => import('@/pages/signup.vue'),
+    },
 
     {
         path: '/danh-muc-san-pham/:producttype',
