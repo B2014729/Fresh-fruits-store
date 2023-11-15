@@ -57,6 +57,12 @@
                                                         Trái cây nhập khẩu
                                                     </router-link>
                                                 </li>
+                                                <li>
+                                                    <router-link class="dropdown-item"
+                                                        :to="{ name: 'portfolio-product', params: { producttype: 'all' } }">
+                                                        Tất cả sản phẩm
+                                                    </router-link>
+                                                </li>
                                             </ul>
                                         </div>
                                     </li>
@@ -76,7 +82,7 @@
 
 
                             <div v-if="issetToken" class="btn-group ms-2">
-                                <span class="text-success mt-2">Bang</span>
+                                <span class="text-success mt-2">user</span>
                                 <button class="btn" @click="onLogout"><i
                                         class="fa-solid fa-right-from-bracket"></i></button>
                             </div>

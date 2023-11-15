@@ -2,12 +2,18 @@
     <div class="container w-75">
         <div class="py-3">
             <h6 style="color: rgb(127, 127, 127);">
-                <router-link :to="{ name: 'home-page' }">Trang chủ </router-link>
+                <router-link class="text-secondary" style="text-decoration: none;" :to="{ name: 'home-page' }">Trang chủ
+                </router-link>
                 <i class="fa-solid fa-chevron-right"></i>
-                <router-link :to="{ name: 'portfolio-product', params: { producttype: 'mn' } }">
+                <router-link class="text-secondary" style="text-decoration: none;"
+                    :to="{ name: 'portfolio-product', params: { producttype: 'mn' } }">
                     Danh mục sản phẩm
                 </router-link>
-                <i class="fa-solid fa-chevron-right"></i> {{ product.name }}
+                <i class="fa-solid fa-chevron-right"></i>
+                <router-link class="text-secondary" style="text-decoration: none;"
+                    :to="{ name: 'detail-product', params: { idProduct: product._id } }">
+                    {{ product.name }}
+                </router-link>
             </h6>
         </div>
 

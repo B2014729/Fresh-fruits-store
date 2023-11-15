@@ -1,59 +1,95 @@
 <template>
-    <tr>
-        <th scope="row">{{ product.id }}</th>
-        <td><img class="img-fluid rounded-circle" style="height: 100px;"
-                src="https://tfruit.com.vn/wp-content/uploads/2019/08/autum-crips-m%E1%BB%B9.jpg" alt="">
-        </td>
-        <td class="pt-5">{{ product.name }}</td>
-        <td class="pt-5">
-            <div class="mt-2">
-                <button @click="removeQuantity()" class="border me-1"><i class="fa-solid fa-minus"
-                        style="color: rgb(161, 161, 161); font-size: 12px;"></i></button>
-                {{ quantity }}
-                <button @click="addQuantity()" class="border ms-1"><i class="fa-solid fa-plus"
-                        style="color: rgb(161, 161, 161);  font-size: 12px;"></i></button>
-            </div>
-        </td>
-        <td class="pt-5">330000</td>
-        <td class="pt-5">33%</td>
-        <td class="fw-bold pt-5">{{ tong }}</td>
-        <td><button class="pt-4 btn rounded-circle w-100 d-flex justify-content-end"><i
-                    class="fa-solid fa-circle-xmark fs-2"></i></button>
-        </td>
-    </tr>
+    <th scope="row">{{ index }}</th>
+    <td><img class="img-fluid rounded-circle" style="height: 100px;" :src=product.image alt="">
+    </td>
+    <td class="pt-5">{{ product.name }}</td>
+    <td class="pt-5">
+        <div>
+            <button @click="removeQuantity()" class="border me-1"><i class="fa-solid fa-minus"
+                    style="color: rgb(161, 161, 161); font-size: 12px;"></i></button>
+            {{ quantityProduct }}
+            <button @click="addQuantity()" class="border ms-1"><i class="fa-solid fa-plus"
+                    style="color: rgb(161, 161, 161);  font-size: 12px;"></i></button>
+        </div>
+    </td>
+    <td class="pt-5">{{ formatNumber(product.price) }}</td>
+    <td class="pt-5">33%</td>
+    <td class="fw-bold pt-5">{{ formatNumber(product.price * quantityProduct) }}</td>
+    <td>
+        <button class="mt-4 btn rounded-circle" @click="onDeleteAllProduct">
+            <i class="fa-solid fa-circle-xmark fs-2"></i>
+        </button>
+    </td>
 </template>
 <script>
+import cartService from '@/service/cart.service';
+
 
 export default {
+    name: 'CardProductCart',
     props: {
         product: {
             type: Object,
             required: true,
+        },
+        index: {
+            type: Number
         }
     },
+
+    setup() {
+        function formatNumber(number) {
+            return (new Intl.NumberFormat().format(number));
+        }
+
+        return {
+            formatNumber
+        }
+    },
+
     data() {
         return {
-            quantity: 1,
-            gia: 330000,
-            tong: 0,
+            quantityProduct: this.product.quantity,
         };
     },
+
+    emits: ['remove', 'add', 'deleteAll'],
+
     methods: {
-        removeQuantity() {
-            if (this.quantity > 1) {
-                this.quantity -= 1;
-                this.tong -= this.gia;
+        async removeQuantity() {
+            if (this.quantityProduct > 1) {
+                this.$emit('remove', this.product.idProduct);
+                this.quantityProduct -= 1;
+                let product = {
+                    idProduct: this.product.idProduct,
+                    name: this.product.name,
+                    price: this.product.price,
+                    image: this.product.image,
+                    quantity: -1,
+                }
+                await cartService.addToCart(this.$cookies.get('jwt'), product);
             }
         },
 
-        addQuantity() {
-            this.quantity += 1;
-            this.tong += this.gia;
+        async addQuantity() {
+            this.$emit('add', this.product.idProduct);
+            this.quantityProduct += 1;
+            let product = {
+                idProduct: this.product.idProduct,
+                name: this.product.name,
+                price: this.product.price,
+                image: this.product.image,
+                quantity: 1,
+            }
+            await cartService.addToCart(this.$cookies.get('jwt'), product);
         },
+
+        onDeleteAllProduct() {
+            if (confirm('Bạn muốn xóa tất cả sản phẩm này ra khỏi giỏ hàng?')) {
+                this.$emit('deleteAll', this.product.idProduct);
+            }
+        }
     },
-    created() {
-        this.tong = this.gia;
-    }
 }
 
 </script>

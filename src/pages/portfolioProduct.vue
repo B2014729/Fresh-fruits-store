@@ -2,9 +2,11 @@
     <div class="container w-75">
         <div class="py-3">
             <h6 style="color: rgb(127, 127, 127);">
-                <router-link :to="{ name: 'home-page' }">Trang chủ </router-link>
+                <router-link class="text-secondary" style="text-decoration: none;" :to="{ name: 'home-page' }">Trang chủ
+                </router-link>
                 <i class="fa-solid fa-chevron-right"></i>
-                <router-link :to="{ name: 'portfolio-product', params: { producttype: 'mn' } }"> Danh mục sản
+                <router-link class="text-secondary" style="text-decoration: none;"
+                    :to="{ name: 'portfolio-product', params: { producttype: 'mn' } }"> Danh mục sản
                     phẩm</router-link>
             </h6>
         </div>
@@ -21,7 +23,9 @@
         <h5 v-if="producttype == 'nn'" class="fw-bold fst-italic" style="color: rgb(127, 127, 127);">
             TRÁI CÂY NHẬP KHẨU___
         </h5>
-
+        <h5 v-if="producttype == 'all'" class="fw-bold fst-italic" style="color: rgb(127, 127, 127);">
+            TẤT CẢ SẢN PHẨM___
+        </h5>
         <div class="row">
             <div class="col-md-3" v-for="(product, index) in listProduct" :key="index">
                 <CardProduct :product=product />
@@ -52,17 +56,30 @@ export default {
     },
 
     methods: {
+
         async updateData(producttype) {
-            await productService.getProductWithType(producttype).then((result) => {
-                this.listProduct = result.data;
-            })
+            if (producttype === 'all') {
+                await productService.getProductList().then((result) => {
+                    this.listProduct = result.data;
+                });
+            } else {
+                await productService.getProductWithType(producttype).then((result) => {
+                    this.listProduct = result.data;
+                })
+            }
         }
     },
 
     async created() {
-        await productService.getProductWithType(this.producttype).then((result) => {
-            this.listProduct = result.data;
-        })
+        if (this.producttype === 'all') {
+            await productService.getProductList().then((result) => {
+                this.listProduct = result.data;
+            });
+        } else {
+            await productService.getProductWithType(this.producttype).then((result) => {
+                this.listProduct = result.data;
+            })
+        }
     },
 
 

@@ -35,9 +35,22 @@ const routes = [
     },
 
     {
+        path: '/cap-nhat-thong-tin',
+        name: 'update-info',
+        component: () => import('@/pages/UpdateInfo.vue'),
+    },
+
+    {
         path: '/gio-hang',
         name: 'your-cart',
         component: () => import('@/pages/YourCart.vue'),
+    },
+
+    {
+        path: '/thong-tin-don-hang/:idOrder',
+        name: 'order-detail',
+        component: () => import('@/pages/orderPage.vue'),
+        props: true,
     },
 
     {

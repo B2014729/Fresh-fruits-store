@@ -10,13 +10,20 @@ class AuthService {
     }
 
     async checkEmail(email) {
-        return (await this.api.get(`/consumer/${email}`)).data;
+        return (await this.api.get(`/consumer-search/${email}`)).data;
     }
 
     async signup(inforSignup) {
         return (await this.api.post('/consumer-create', { email: inforSignup.email, password: inforSignup.password })).data;
     }
 
+    async getInfo(token) {
+        return (await this.api.get(`/consumer/${token}`)).data;
+    }
+
+    async updateInfor(data, token) {
+        return (await this.api.put(`/consumer/${token}`, data)).data;
+    }
 }
 
 export default new AuthService();

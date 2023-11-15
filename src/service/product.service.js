@@ -5,6 +5,10 @@ class ProductService {
         this.api = createApiClient(baseUrl);
     }
 
+    async getProductList() {
+        return (await this.api.get('/product-list')).data;
+    }
+
     async getIsOutstanding() {
         return (await this.api.get('/product-outstanding')).data;
     }

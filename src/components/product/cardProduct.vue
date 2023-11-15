@@ -11,7 +11,7 @@
         <div class="w-100 mt-3 d-flex justify-content-center">
             <div>
                 <span class="name-product">{{ product.name }}</span>
-                <p class="text-center text-danger">{{ product.price }} đ</p>
+                <p class="text-center text-danger">{{ formatNumber(product.price) }} đ</p>
             </div>
         </div>
         <div class="w-100 d-flex justify-content-between px-2">
@@ -30,6 +30,7 @@
     </div>
 </template>
 <script>
+import cartService from '@/service/cart.service';
 export default {
     name: 'cardProduct',
     props: {
@@ -38,6 +39,17 @@ export default {
             required: true,
         }
     },
+
+    setup() {
+        function formatNumber(number) {
+            return (new Intl.NumberFormat().format(number));
+        }
+
+        return {
+            formatNumber
+        }
+    },
+
     data() {
         return {
             quantity: 1,
@@ -56,9 +68,31 @@ export default {
             this.quantity += 1;
         },
 
-        addToCart() {
-            this.quantity = 1;
-            alert('Đã thêm vào giỏ hàng');
+        async addToCart() {
+            const idUser = this.$cookies.get('jwt');
+            if (idUser) {
+                let productAdd = {
+                    idProduct: this.product._id,
+                    name: this.product.name,
+                    price: this.product.price,
+                    image: this.product.image,
+                    quantity: this.quantity,
+
+                }
+                this.quantity = 1;
+                try {
+                    await cartService.addToCart(idUser, productAdd).then((result) => {
+                        if (result.statusCode === 200) {
+                            alert('Đã thêm vào giỏ hàng!');
+                        }
+                    })
+                } catch (error) {
+                    alert('Thêm vào giỏ hàng không thành công!');
+                    console.log(error);
+                }
+            } else {
+                alert('Đăng nhập để thêm sản phẩm vào giỏ hàng!');
+            }
         },
 
         onCard() {
