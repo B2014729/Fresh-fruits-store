@@ -10,7 +10,11 @@
                     </li>
                 </ul>
 
-                <p class="text-secondary fst-italic">* Thanh toán: {{ orderInfo.payment }} vnd.</p>
+                <p class="text-secondary fst-italic">* Tổng hóa đơn: {{ formatNumber(orderInfo.payment) }} vnd.</p>
+                <p class="text-secondary fst-italic">* Phí vận chuyển: 49,000 vnd.</p>
+                <p class="text-secondary fst-italic">* Thanh toán: <span class="fw-bold">{{ formatNumber(orderInfo.payment +
+                    49000) }} vnd.</span></p>
+                <p class="text-secondary fst-italic">* Phương thức thanh toán: Thanh toán khi nhận hàng.</p>
                 <p class="text-secondary fst-italic">* Thông tin giao hàng: </p>
                 <ul>
                     <li><span class="fw-bold">Khách hàng:</span> {{ orderInfo.fullname }}</li>
@@ -40,6 +44,15 @@ export default {
         idOrder: {
             type: String,
             required: true,
+        }
+    },
+    setup() {
+        function formatNumber(number) {
+            return (new Intl.NumberFormat().format(number));
+        }
+
+        return {
+            formatNumber
         }
     },
     data() {

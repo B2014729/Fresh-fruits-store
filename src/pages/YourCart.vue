@@ -155,6 +155,7 @@ export default {
         remove(idProduct) {
             this.listProduct.forEach((product) => {
                 if (product.idProduct === idProduct) {
+                    product.quantity -= 1;
                     this.sum = this.sum - product.price;
                 }
             })
@@ -163,6 +164,7 @@ export default {
         add(idProduct) {
             this.listProduct.forEach((product) => {
                 if (product.idProduct === idProduct) {
+                    product.quantity += 1;
                     this.sum = this.sum + product.price;
                 }
             })
