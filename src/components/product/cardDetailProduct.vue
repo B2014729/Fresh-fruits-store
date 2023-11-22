@@ -65,7 +65,8 @@ export default {
         },
 
         addQuantity() {
-            this.quantity += 1;
+            if (this.quantity < this.product.quantity)
+                this.quantity += 1;
         },
 
         async addToCart() {

@@ -1,6 +1,6 @@
 <template>
     <div class="container w-75">
-        <div class="py-3">
+        <div class="py-3 d-flex justify-content-between">
             <h6 style="color: rgb(127, 127, 127);">
                 <router-link :to="{ name: 'home-page' }">Trang chủ </router-link>
                 <i class="fa-solid fa-chevron-right"></i>
@@ -10,8 +10,12 @@
                 <i class="fa-solid fa-chevron-right"></i>
                 <router-link :to="{ name: 'your-cart' }"> Giỏ hàng</router-link>
             </h6>
+            <div>
+                <router-link :to="{ name: 'order-list' }">
+                    <button class="btn btn-secondary">Đơn hàng của bạn</button>
+                </router-link>
+            </div>
         </div>
-
 
         <div class="w-100">
             <table class="table table-striped">
@@ -72,7 +76,7 @@
                             <select id="exampleInputEmail1" class="form-select" aria-label="Default select example">
                                 <option selected>Thanh toán khi nhận hàng</option>
                                 <option value="1">Fresh Fruils Pay</option>
-                                <option value="2">Mono App</option>
+                                <option value="2">Momo App</option>
                             </select>
                         </div>
 
@@ -131,21 +135,25 @@ export default {
 
     async created() {
         if (this.$cookies.get('jwt')) {
-            this.issetUser = true;
-            this.userToken = this.$cookies.get('jwt');
+            try {
+                this.issetUser = true;
+                this.userToken = this.$cookies.get('jwt');
 
-            await authService.getInfo(this.userToken).then((result) => {
-                this.user = result.data;
-            });
+                await authService.getInfo(this.userToken).then((result) => {
+                    this.user = result.data;
+                });
 
-            await cartService.getCart(this.userToken).then((result) => {
-                this.listProduct = result.products;
-            });
-            this.listProduct.forEach((product) => {
-                this.sum = this.sum + product.price * product.quantity;
-            });
+                await cartService.getCart(this.userToken).then((result) => {
+                    this.listProduct = result.products;
+                });
+                this.listProduct.forEach((product) => {
+                    this.sum = this.sum + product.price * product.quantity;
+                });
 
-            this.deliveryDate = moment(this.deliveryDate).format("DD/MM/YYYY");
+                this.deliveryDate = moment(this.deliveryDate).format("DD/MM/YYYY");
+            } catch (error) {
+                console.log(error);
+            }
         } else {
             this.issetUser = false;
         }
@@ -223,7 +231,7 @@ export default {
 
                     let orderSuccess = false;
                     let idOrder = '';
-                    await orderService.create(dataOrder).then((result) => {
+                    await orderService.create(dataOrder).then((result) => {// create tra ve ma don hang vua tao
                         if (result.statusCode == 200) {
                             orderSuccess = true;
                             idOrder = result.data.idOrder;

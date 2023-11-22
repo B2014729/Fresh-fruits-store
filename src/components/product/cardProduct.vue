@@ -16,10 +16,10 @@
         </div>
         <div class="w-100 d-flex justify-content-between px-2">
             <div class="mt-2">
-                <button @click="removeQuantity()" class="border me-1"><i class="fa-solid fa-minus"
+                <button @click="removeQuantity()" class="border "><i class="fa-solid fa-minus"
                         style="color: rgb(161, 161, 161); font-size: 12px;"></i></button>
                 {{ quantity }}
-                <button @click="addQuantity()" class="border ms-1"><i class="fa-solid fa-plus"
+                <button @click="addQuantity()" class="border"><i class="fa-solid fa-plus"
                         style="color: rgb(161, 161, 161);  font-size: 12px;"></i></button>
             </div>
             <button @click="addToCart()" class="btn btn-success rounded-5">
@@ -65,7 +65,9 @@ export default {
         },
 
         addQuantity() {
-            this.quantity += 1;
+            if (this.quantity < this.product.quantity) {
+                this.quantity += 1;
+            }
         },
 
         async addToCart() {

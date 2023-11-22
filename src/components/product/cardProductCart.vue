@@ -23,7 +23,7 @@
 </template>
 <script>
 import cartService from '@/service/cart.service';
-
+import productService from '@/service/product.service';
 
 export default {
     name: 'CardProductCart',
@@ -50,7 +50,14 @@ export default {
     data() {
         return {
             quantityProduct: this.product.quantity,
+            productDetail: {}
         };
+    },
+
+    async created() {
+        await productService.getProduct(this.product.idProduct).then((result) => {
+            this.productDetail = result.data;
+        })
     },
 
     emits: ['remove', 'add', 'deleteAll'],
@@ -72,16 +79,18 @@ export default {
         },
 
         async addQuantity() {
-            this.$emit('add', this.product.idProduct);
-            this.quantityProduct += 1;
-            let product = {
-                idProduct: this.product.idProduct,
-                name: this.product.name,
-                price: this.product.price,
-                image: this.product.image,
-                quantity: 1,
+            if (this.quantityProduct < this.productDetail.quantity) {
+                this.$emit('add', this.product.idProduct);
+                this.quantityProduct += 1;
+                let product = {
+                    idProduct: this.product.idProduct,
+                    name: this.product.name,
+                    price: this.product.price,
+                    image: this.product.image,
+                    quantity: 1,
+                }
+                await cartService.addToCart(this.$cookies.get('jwt'), product);
             }
-            await cartService.addToCart(this.$cookies.get('jwt'), product);
         },
 
         onDeleteAllProduct() {

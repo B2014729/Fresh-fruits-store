@@ -47,6 +47,12 @@ const routes = [
     },
 
     {
+        path: '/danh-sach-don-hang',
+        name: 'order-list',
+        component: () => import('@/pages/orderList.vue'),
+    },
+
+    {
         path: '/thong-tin-don-hang/:idOrder',
         name: 'order-detail',
         component: () => import('@/pages/orderPage.vue'),

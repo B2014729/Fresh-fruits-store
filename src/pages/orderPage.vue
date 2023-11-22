@@ -23,7 +23,7 @@
                     <li><span class="fw-bold">Trạng thái đơn hàng:</span> {{ orderInfo.status }}</li>
                 </ul>
             </div>
-            <router-link :to="{ name: 'your-cart' }">
+            <router-link :to="{ name: 'order-list' }">
                 <button class="btn btn-secondary">Quay lại</button>
             </router-link>
         </div>

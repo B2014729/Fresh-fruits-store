@@ -13,6 +13,10 @@ class OrderService {
         return (await this.api.get(`/order/${idOrder}`)).data;
     }
 
+    async getListOrder(token) {
+        return (await this.api.get(`/order-list-with-consumer/${token}`)).data
+    }
+
     async getOrderDetail(idOrder) {
         return (await this.api.get(`/order-detail/${idOrder}`)).data;
     }
